@@ -105,6 +105,8 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
     
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                            action:@selector(scrollViewUp:)];
+    tapGestureRecognizer.delegate = self;
+
     tapGestureRecognizer.cancelsTouchesInView = NO;
     [cellScrollView addGestureRecognizer:tapGestureRecognizer];
     
@@ -112,6 +114,7 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
     
     SWLongPressGestureRecognizer *longPressGestureRecognizer = [[SWLongPressGestureRecognizer alloc] initWithTarget:self
                                                                                                              action:@selector(scrollViewPressed:)];
+    longPressGestureRecognizer.delegate = self;
     longPressGestureRecognizer.cancelsTouchesInView = NO;
     longPressGestureRecognizer.minimumPressDuration = 0.1;
     [cellScrollView addGestureRecognizer:longPressGestureRecognizer];
@@ -159,6 +162,13 @@ static NSString * const kTableViewCellContentView = @"UITableViewCellContentView
     self.cellScrollView.scrollEnabled = YES;
     self.tapGestureRecognizer.enabled = YES;
     
+}
+
+#pragma mark UIGestureRecognizer
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    return ![touch.view isKindOfClass:[UIButton class]];
 }
 
 #pragma mark - Properties
